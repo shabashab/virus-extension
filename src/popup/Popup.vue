@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 
 const crx = ref('create-chrome-ext')
 
-const counter = ref(parseInt(localStorage.counter) ?? 0);
+const counter = ref(Number.isNaN(parseInt(localStorage.counter)) ? 0 : parseInt(localStorage.counter));
 const disabled = ref(false);
 
 onMounted(() => {
