@@ -4,16 +4,19 @@ import { onMounted, ref } from 'vue'
 const crx = ref('create-chrome-ext')
 
 const counter = ref(Number.isNaN(parseInt(localStorage.counter)) ? 0 : parseInt(localStorage.counter));
-const disabled = ref(false);
+const disabled = ref(localStorage.disabled === "true");
 
 onMounted(() => {
-  setInterval(() => {
-    if (!disabled.value) {
-      counter.value += (Math.random() * 10);
-      localStorage.counter = counter.value;
-    }
-  }, Math.random() * 2000);
+  if (!disabled.value) {
+    counter.value += (Math.random() * 10);
+    localStorage.counter = counter.value;
+  }
 });
+
+const onDisableButtonClick = () => {
+  disabled.value = !disabled.value;
+  localStorage.disabled = disabled.value;
+}
 </script>
 
 <template>
@@ -31,7 +34,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="container mt-2">
-      <button @click.stop="disabled = !disabled" class="button" :class="{ 'button-disabled': disabled }">
+      <button @click.stop="onDisableButtonClick" class="button" :class="{ 'button-disabled': disabled }">
         {{ disabled ? 'Enable' : 'Disable' }}
       </button>
     </div>
